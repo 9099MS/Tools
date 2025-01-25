@@ -21,43 +21,22 @@
             </nav>
         </header>
 
+        <!-- 기본 콘텐츠 영역 -->
         <main class="bg-white rounded-lg shadow-md p-6 min-h-[500px]">
             <div id="contentArea" class="grid grid-cols-3 gap-4">
-                <!-- 초기 썸네일 영역 -->
-                <div id="thumbnailContainer" class="col-span-3 grid grid-cols-4 gap-4">
-                    <!-- 썸네일 추가 버튼 -->
-                    <div id="addThumbnailBtn" class="bg-gray-200 hover:bg-gray-300 transition rounded-lg flex items-center justify-center cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
-                            <path d="M5 12h14"/><path d="M12 5v14"/>
-                        </svg>
-                    </div>
+                <!-- 기본 디폴트 콘텐츠: 버튼 생성 메뉴 -->
+                <div class="col-span-3">
+                    <h2 class="text-2xl font-bold mb-4">버튼 생성기</h2>
+                    <iframe src="./make_button.html" class="w-full h-[600px] border rounded"></iframe>
                 </div>
             </div>
         </main>
-    </div>
-
-    <!-- 썸네일 추가 모달 -->
-    <div id="thumbnailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg max-w-md w-full">
-            <h2 class="text-xl font-bold mb-4">썸네일 추가</h2>
-            <input type="text" id="thumbnailUrlInput" placeholder="이미지 URL" class="w-full p-2 border rounded mb-4">
-            <div class="flex justify-end space-x-2">
-                <button id="cancelThumbnail" class="bg-gray-300 text-black px-4 py-2 rounded">취소</button>
-                <button id="saveThumbnail" class="bg-purple-500 text-white px-4 py-2 rounded">추가</button>
-            </div>
-        </div>
     </div>
 
     <script>
         // 메뉴 선택 로직
         const menuButtons = document.querySelectorAll('.menu-btn');
         const contentArea = document.getElementById('contentArea');
-        const thumbnailContainer = document.getElementById('thumbnailContainer');
-        const addThumbnailBtn = document.getElementById('addThumbnailBtn');
-        const thumbnailModal = document.getElementById('thumbnailModal');
-        const thumbnailUrlInput = document.getElementById('thumbnailUrlInput');
-        const saveThumbnail = document.getElementById('saveThumbnail');
-        const cancelThumbnail = document.getElementById('cancelThumbnail');
 
         // 메뉴 클릭 이벤트
         menuButtons.forEach(btn => {
@@ -81,48 +60,6 @@
                     `;
                 }
             });
-        });
-
-        // 썸네일 추가 모달 토글
-        addThumbnailBtn.addEventListener('click', () => {
-            thumbnailModal.classList.remove('hidden');
-            thumbnailModal.classList.add('flex');
-        });
-
-        cancelThumbnail.addEventListener('click', () => {
-            thumbnailModal.classList.remove('flex');
-            thumbnailModal.classList.add('hidden');
-        });
-
-        // 썸네일 저장 로직
-        saveThumbnail.addEventListener('click', () => {
-            const imageUrl = thumbnailUrlInput.value.trim();
-            if (imageUrl) {
-                const thumbnailElement = document.createElement('div');
-                thumbnailElement.className = 'bg-gray-200 rounded-lg overflow-hidden relative group';
-                thumbnailElement.innerHTML = `
-                    <img src="${imageUrl}" alt="썸네일" class="w-full h-48 object-cover">
-                    <button class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
-                            <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                        </svg>
-                    </button>
-                `;
-
-                // 삭제 버튼 기능
-                const deleteBtn = thumbnailElement.querySelector('button');
-                deleteBtn.addEventListener('click', () => {
-                    thumbnailElement.remove();
-                });
-
-                thumbnailContainer.insertBefore(thumbnailElement, addThumbnailBtn);
-                thumbnailUrlInput.value = '';
-                
-                thumbnailModal.classList.remove('flex');
-                thumbnailModal.classList.add('hidden');
-            } else {
-                alert('이미지 URL을 입력해주세요.');
-            }
         });
     </script>
 </body>
