@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="container mx-auto  max-w-full p-8">
+    <div class="container mx-auto max-w-full p-8">
         <div class="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6">
             <h1 class="text-2xl font-bold mb-4">✨ 맞춤형 URL 버튼 생성기</h1>
             <div class="space-y-4">
@@ -55,9 +55,8 @@
             selectedColor = hexCode;
             selectedColorName = colorName;
             
-            // 선택된 색상 버튼에 테두리 강조
             const colorButtons = document.querySelectorAll('#colorPalette button');
-            colorButtons.forEach(btn => btn.classList.remove('ring-4', 'ring-offset-2'));
+            colorButtons.forEach(btn => btn.classList.remove('ring-4', 'ring-offset-2', 'ring-black'));
             event.target.classList.add('ring-4', 'ring-offset-2', 'ring-black');
         }
 
@@ -66,42 +65,52 @@
             const text = document.getElementById('textInput').value || '2025년 새해 복 많이 받으세요';
             const emoji = document.getElementById('emojiInput').value || '✨';
 
-            const buttonCode = `<style>
-.button-shine {
-  position: relative;
-  animation: pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  filter: brightness(1.2);
-}
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    filter: brightness(1.2);
-  }
-  50% {
-    opacity: 0.7;
-    filter: brightness(0.8);
-  }
-}
-</style>
+            const buttonCode = `
 <div style="text-align: center;">
-  <button 
-    onclick="window.open('${url}', '_blank')"
-    style="padding: 1rem 2rem; background-color: ${selectedColor}; color: #FFFFFF; border: none; cursor: pointer; transition: all 0.3s ease; width: 100%; text-shadow: 0 0 10px rgba(255,255,255,0.5); box-shadow: 0 0 15px rgba(255,255,255,0.2);"
-    class="button-shine"
-  >
-    ${emoji} ${text} ${emoji}
-  </button>
-</div>`;
+    <a href="${url}" target="_blank" style="
+        display: inline-block;
+        padding: 1rem 2rem;
+        background-color: ${selectedColor};
+        color: #FFFFFF;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 85%;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* box-shadow 추가 */
+        border-radius: 8px; /* 모서리를 8px만큼 둥글게 */
+        position: relative;
+        animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        filter: brightness(1.2);
+    ">
+        ${emoji} ${text} ${emoji}
+    </a>
+</div>
+`;
 
             document.getElementById('previewArea').innerHTML = `
-                <div style="text-align: center;">
-                    <button 
-                        style="padding: 1rem 2rem; background-color: ${selectedColor}; color: #FFFFFF; border: none; cursor: pointer; transition: all 0.3s ease; width: 85%; text-shadow: 0 0 10px rgba(255,255,255,0.5); box-shadow: 0 0 15px rgba(255,255,255,0.2);"
-                        class="button-shine"
-                    >
-                        ${emoji} ${text} ${emoji}
-                    </button>
-                </div>
+            <div style="text-align: center;">
+                <a href="${url}" target="_blank" style="
+                    display: inline-block;
+                    padding: 1rem 2rem;
+                    background-color: ${selectedColor};
+                    color: #FFFFFF;
+                    text-decoration: none;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    width: 85%;
+                    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+                    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* box-shadow 추가 */
+                    border-radius: 8px; /* 모서리를 8px만큼 둥글게 */
+                    position: relative;
+                    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                    filter: brightness(1.2);
+                ">
+                    ${emoji} ${text} ${emoji}
+                </a>
+            </div>
             `;
             document.getElementById('codeOutput').value = buttonCode;
         }
@@ -115,4 +124,3 @@
     </script>
 </body>
 </html>
- 
