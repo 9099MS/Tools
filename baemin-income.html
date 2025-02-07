@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배민 수입 계산기</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f3f4f6; text-align: center; }
+        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 350px; margin: 50px auto; }
+        input { width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        .result { background: #e5e7eb; padding: 10px; border-radius: 5px; margin-top: 10px; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        th, td { padding: 10px; text-align: center; border: 1px solid #ccc; }
+        th { background-color: #f1f1f1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>배민 수입 계산기</h1>
+        <label>총 수입 (원)</label>
+        <input type="number" id="income" oninput="calculate()">
+        
+        <label>주행 거리 (km)</label>
+        <input type="number" id="distance" oninput="calculate()">
+        
+        <div class="result">
+            <h3>차종별 연비 및 기름값</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>차종</th>
+                        <th>연비 (km/L)</th>
+                        <th>기름값 (원/L)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>오피러스</td>
+                        <td><input type="number" id="opirusFuelEfficiency" value="5" oninput="calculate()"></td>
+                        <td><input type="number" id="opirusFuelPrice" value="1130" oninput="calculate()"></td>
+                    </tr>
+                    <tr>
+                        <td>니로</td>
+                        <td><input type="number" id="niroFuelEfficiency" value="20" oninput="calculate()"></td>
+                        <td><input type="number" id="niroFuelPrice" value="1800" oninput="calculate()"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>🚗 오피러스: <span id="opirusIncome">0</span> 원</p>
+            <p>🚙 니로: <span id="niroIncome">0</span> 원</p>
+            <p>💰 오피러스와 니로 차액: <span id="incomeDifference">0</span> 원</p>
+        </div>
+    </div>
+    
+    <script>
+        function calculate() {
+            const income = parseFloat(document.getElementById("income").value) || 0;
+            const distance = parseFloat(document.getElementById("distance").value) || 0;
+            
+            const opirusFuelEfficiency = parseFloat(document.getElementById("opirusFuelEfficiency").value) || 5;
+            const niroFuelEfficiency = parseFloat(document.getElementById("niroFuelEfficiency").value) || 20;
+            
+            const opirusFuelPrice = parseFloat(document.getElementById("opirusFuelPrice").value) || 1130;
+            const niroFuelPrice = parseFloat(document.getElementById("niroFuelPrice").value) || 1800;
+            
+            function netIncome(totalIncome, distance, fuelEfficiency, fuelPrice) {
+                const fuelCost = (distance / fuelEfficiency) * fuelPrice;
+                const tax = totalIncome * 0.05;
+                return totalIncome - fuelCost - tax;
+            }
+            
+            const opirusIncome = netIncome(income, distance, opirusFuelEfficiency, opirusFuelPrice);
+            const niroIncome = netIncome(income, distance, niroFuelEfficiency, niroFuelPrice);
+            const incomeDifference = opirusIncome - niroIncome;
+            
+            document.getElementById("opirusIncome").textContent = opirusIncome.toLocaleString();
+            document.getElementById("niroIncome").textContent = niroIncome.toLocaleString();
+            document.getElementById("incomeDifference").textContent = incomeDifference.toLocaleString();
+        }
+    </script>
+</body>
+</html>
